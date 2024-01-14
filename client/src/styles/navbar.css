@@ -7,6 +7,7 @@
     color: white;
     font-family: 'Noto Sans', sans-serif;
 }
+
 .nav-links {
     list-style-type: none;
     display: flex;
@@ -15,9 +16,14 @@
     padding: 0 10px 0 10px;
     transition: all .2s ease-in-out;
 }
-.nav-links li {
+
+.nav-item {
     border: 1px solid white;
     margin-bottom: 10px;
+}
+
+.nav-item:hover {
+    transform: scale(1.1, 1.1);
 }
 
 a {
@@ -30,6 +36,11 @@ a:focus {
     text-decoration: underline;
 }
 
-.nav-links li:hover {
-    transform: scale(1.1, 1.1);
+.logout-btn {
+    background: none;
+    color: white;
+    font-size: 18px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
 }

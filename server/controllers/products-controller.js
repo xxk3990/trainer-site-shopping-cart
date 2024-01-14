@@ -36,26 +36,11 @@ const updateProduct = async (req, res) => {
         }
     })
     try {
-        models.sequelize.transaction(async () => {
-            prodToUpdate.price = utils.removeDecimalOrAddZeros(prod.price);
-            prodToUpdate.product_name = prod.product_name;
-            prodToUpdate.image_url = prod.image_url;
-            await prodToUpdate.save();
-            //update all corresponding active cart items if product is updated
-            const cartItemsToUpdate = await models.Cart_Item.findAll({
-                where: {
-                    "product_uuid": prodToUpdate.uuid
-                }
-            })
-            cartItemsToUpdate.map(async ci => {
-                ci.price = prodToUpdate.price * ci.quantity;
-                ci.prouct_name = prodToUpdate.product_name;
-                ci.image_url = prodToUpdate.image_url;
-                await ci.save()
-            })
-            return res.status(200).send()
-        })
-
+        prodToUpdate.price = utils.removeDecimalOrAddZeros(prod.price);
+        prodToUpdate.product_name = prod.product_name;
+        prodToUpdate.image_url = prod.image_url;
+        await prodToUpdate.save();
+        return res.status(200).send()
     } catch {
         return res.status(304).send()
     }
@@ -64,18 +49,29 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
     try {
         models.sequelize.transaction(async () => {
-            models.Product.destroy({
+            await models.Product.destroy({
                 where: {
                     'uuid': req.query.product
                 }
             });
-            //if product is deleted, delete all corresponding cart items.
-            //Later on notify user of deletion so they are not confused when they see their cart.
-            models.Cart_Item.destroy({ 
+            // //if product is deleted, delete all corresponding order items and decrease all order_totals.
+            // //Later on maybe notify user of deletion so they are not confused when they see their cart.
+            const activeOrders = await models.Order.findAll({
                 where: {
-                    'product_uuid': req.query.product
-                }
+                    'completed': false
+                },
+                raw: true
             })
+            if (activeOrders.length !== 0) {
+                activeOrders.map(async odr => {
+                    await models.Order_Item.destroy({
+                        where: {
+                            'order_uuid': odr.uuid,
+                            'product_uuid': req.query.product
+                        }
+                    })
+                })
+            }
             res.status(200).send()
         })
 

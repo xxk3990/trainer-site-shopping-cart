@@ -6,7 +6,7 @@ export const handleGet = async (endpoint, setDataInComponent) => {
     console.log(url);
     await fetch(url, {
         method: 'GET',
-     //   credentials: "include"
+        credentials: "include"
     }).then(response => response.json(),
     []).then(responseData => {
         //The data for the component is the main setXXX variable (examples: setProducts, setOrders)
@@ -27,7 +27,7 @@ export const handlePost = async (endpoint, body) => {
                 "Content-Type": 'application/json',
             //"Authorization": `Bearer ${token}` 
             },
-        // credentials: 'include',
+            credentials: 'include',
             body: JSON.stringify(body)
         }
     return fetch(url, requestParams)
@@ -41,7 +41,7 @@ export const handlePut = async (endpoint, body) => {
             "Content-Type": 'application/json',
             //"Authorization": `Bearer ${token}` 
         },
-        // credentials: 'include',
+        credentials: 'include',
         body: JSON.stringify(body)
     }
     return fetch(url, requestParams)

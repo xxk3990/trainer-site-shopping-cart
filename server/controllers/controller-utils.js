@@ -21,4 +21,6 @@ const integerTest = (amount) => {
     }
 }
 
-module.exports = {removeDecimalOrAddZeros, integerTest, addDecimal}
+const calcUnitPrice = (price, quantity) => price / quantity;
+
+module.exports = {removeDecimalOrAddZeros, integerTest, addDecimal, calcUnitPrice}

@@ -56,6 +56,4 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-# .env
-
-personal-trainer-site.cg6tsyf9mgr3.us-east-2.rds.amazonaws.com
+.env

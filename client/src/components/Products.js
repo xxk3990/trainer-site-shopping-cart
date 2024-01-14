@@ -99,7 +99,7 @@ export default function Products() {
     }
 
     const submitProductDelete = async (prodToDelete) => {
-        const endpoint = `products?product=${prodToDelete.uuid}`
+        const endpoint = `products?product=${prodToDelete.uuid}&price=${prodToDelete.price}`
         const response = await handleDelete(endpoint)
         if(response.status === 200) {
             setOpenSnackbar(true);

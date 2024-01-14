@@ -8,7 +8,7 @@ const router = require("./router");
 const environment = process.env.NODE_ENV;
 const app = express();
 app.use(cookieParser());
-app.use(cors({origin: '*'}))
+app.use(cors({ origin: "http://localhost:3001", credentials:true}))
 app.use(express.json());
 const port = process.env.PORT || 3000
 
